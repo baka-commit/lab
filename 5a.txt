@@ -1,0 +1,129 @@
+EXPERIMENT 5(a): DESIGN AND NORMALIZE A DATABASE SCHEMA UP TO 3NF
+
+AIM
+
+To design a relational database schema and normalize it up to the Third
+Normal Form (3NF).
+
+THEORY
+
+Database normalization is the process of organizing data into related
+tables to reduce data redundancy and improve data integrity.
+
+1NF (First Normal Form): - Each column contains atomic (single)
+values. - Each row is unique. - There are no repeating groups.
+
+2NF (Second Normal Form): - The table is already in 1NF. - Every non-key
+attribute depends on the whole primary key. - There are no partial
+dependencies.
+
+3NF (Third Normal Form): - The table is already in 2NF. - Non-key
+attributes depend only on the primary key. - There are no transitive
+dependencies.
+
+ENTITIES AND RELATIONSHIPS
+
+1.  DEPARTMENT: Stores department details.
+2.  STUDENT: Stores student details and references a department.
+3.  COURSE: Stores course details and references a department.
+4.  ENROLLMENT: Connects students and courses and stores enrollment
+    details.
+
+Relationships: - One department can have many students. - One department
+can offer many courses. - One student can enroll in many courses. - One
+course can have many students. - ENROLLMENT resolves the many-to-many
+relationship between STUDENT and COURSE.
+
+PROCEDURE
+
+1.  Install MySQL Server and MySQL Workbench.
+2.  Open MySQL Workbench and connect to the local MySQL server.
+3.  Create the database named college.
+4.  Select the college database using USE college.
+5.  Create the department table.
+6.  Create the student and course tables with department_id as a foreign
+    key.
+7.  Create the enrollment table with student_id and course_id as foreign
+    keys.
+8.  Execute the SHOW TABLES command to verify that all tables were
+    created.
+9.  Execute DESCRIBE for each table to inspect its columns, data types
+    and keys.
+10. Verify the primary key and foreign key relationships.
+
+SQL QUERIES
+
+STEP 1: Create the database
+
+CREATE DATABASE college;
+
+STEP 2: Select the database
+
+USE college;
+
+STEP 3: Create the department table
+
+CREATE TABLE department ( department_id INT AUTO_INCREMENT PRIMARY KEY,
+department_name VARCHAR(100), department_head VARCHAR(100) );
+
+STEP 4: Create the student table
+
+CREATE TABLE student ( student_id INT AUTO_INCREMENT PRIMARY KEY, name
+VARCHAR(100), dob DATE, department_id INT, email VARCHAR(100), FOREIGN
+KEY (department_id) REFERENCES department(department_id) );
+
+STEP 5: Create the course table
+
+CREATE TABLE course ( course_id INT AUTO_INCREMENT PRIMARY KEY,
+course_name VARCHAR(100), credits INT, department_id INT, FOREIGN KEY
+(department_id) REFERENCES department(department_id) );
+
+STEP 6: Create the enrollment table
+
+CREATE TABLE enrollment ( enroll_id INT AUTO_INCREMENT PRIMARY KEY,
+student_id INT, course_id INT, enrollment_date DATE, grade VARCHAR(5),
+FOREIGN KEY (student_id) REFERENCES student(student_id), FOREIGN KEY
+(course_id) REFERENCES course(course_id) );
+
+STEP 7: Display all tables in the selected database
+
+SHOW TABLES;
+
+STEP 8: Display the structure of each table
+
+DESCRIBE department;
+
+DESCRIBE student;
+
+DESCRIBE course;
+
+DESCRIBE enrollment;
+
+You can also use DESC instead of DESCRIBE. For example:
+
+DESC student;
+
+EXPECTED RESULT
+
+The college database is created successfully with four related tables:
+department, student, course and enrollment.
+
+SHOW TABLES should list all four tables. DESCRIBE should display each
+table’s columns, data types, key information and other properties.
+
+PRECAUTIONS
+
+1.  Select the college database using USE college before creating
+    tables.
+2.  Create the department table before student and course because they
+    reference department_id.
+3.  Create student and course before enrollment because enrollment
+    references both tables.
+4.  Use unique table and column names.
+5.  Execute each SQL statement with a semicolon at the end.
+
+RESULT
+
+Thus, the relational database schema was designed and created
+successfully with primary key and foreign key constraints, following a
+normalized structure up to 3NF.

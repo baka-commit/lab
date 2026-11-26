@@ -1,0 +1,159 @@
+EXPERIMENT 5(b): PERFORM SQL-BASED CRUD OPERATIONS USING MYSQL
+
+AIM
+
+To perform Create, Read, Update and Delete (CRUD) operations on the
+MySQL database created in Experiment 5(a).
+
+THEORY
+
+CRUD represents the four basic operations used to manage records in a
+database:
+
+1.  CREATE: Insert new records into a table using INSERT INTO.
+2.  READ: Retrieve records from a table using SELECT.
+3.  UPDATE: Modify existing records using UPDATE.
+4.  DELETE: Remove records using DELETE.
+
+PROCEDURE
+
+1.  Install and launch MySQL Server and MySQL Workbench.
+2.  Connect to the local MySQL server.
+3.  Open the college database using USE college.
+4.  Ensure that the department, student, course and enrollment tables
+    from Experiment 5(a) have already been created.
+5.  Insert sample records into the tables using INSERT INTO.
+6.  Retrieve the inserted records using SELECT.
+7.  Modify a record using UPDATE.
+8.  Verify the modification using SELECT.
+9.  Delete the sample records using DELETE.
+10. Verify the deletion using SELECT and display the table structure.
+
+SQL QUERIES
+
+STEP 1: Select the database
+
+USE college;
+
+STEP 2: CREATE - Insert sample records
+
+Insert a department:
+
+INSERT INTO department (department_name, department_head) VALUES (‘CSE’,
+‘Dr. Rao’);
+
+Store the generated department ID for the following queries:
+
+SET @dept_id = LAST_INSERT_ID();
+
+Insert a student:
+
+INSERT INTO student (name, dob, department_id, email) VALUES (‘Praneel’,
+‘2004-01-14’, @dept_id, ‘praneel@example.com’);
+
+SET @student_id = LAST_INSERT_ID();
+
+Insert a course:
+
+INSERT INTO course (course_name, credits, department_id) VALUES
+(‘Database Management Systems’, 4, @dept_id);
+
+SET @course_id = LAST_INSERT_ID();
+
+Insert an enrollment record:
+
+INSERT INTO enrollment (student_id, course_id, enrollment_date, grade)
+VALUES (@student_id, @course_id, ‘2026-11-26’, ‘A’);
+
+STEP 3: READ - Retrieve records
+
+Display all departments:
+
+SELECT * FROM department;
+
+Display all students:
+
+SELECT * FROM student;
+
+Display all courses:
+
+SELECT * FROM course;
+
+Display all enrollment records:
+
+SELECT * FROM enrollment;
+
+STEP 4: UPDATE - Modify a record
+
+Update the student’s email address:
+
+UPDATE student SET email = ‘updated@example.com’ WHERE student_id =
+@student_id;
+
+Verify the updated record:
+
+SELECT * FROM student WHERE student_id = @student_id;
+
+STEP 5: DELETE - Delete sample records
+
+Delete the enrollment record first because it references the student and
+course records:
+
+DELETE FROM enrollment WHERE student_id = @student_id AND course_id =
+@course_id;
+
+Delete the student record:
+
+DELETE FROM student WHERE student_id = @student_id;
+
+Delete the course record:
+
+DELETE FROM course WHERE course_id = @course_id;
+
+Delete the department record:
+
+DELETE FROM department WHERE department_id = @dept_id;
+
+STEP 6: Verify deletion
+
+SELECT * FROM enrollment; SELECT * FROM student; SELECT * FROM course;
+SELECT * FROM department;
+
+STEP 7: Display all tables
+
+SHOW TABLES;
+
+STEP 8: Display table structures
+
+DESC department; DESC student; DESC course; DESC enrollment;
+
+EXPECTED OUTPUT
+
+1.  The sample department, student, course and enrollment records are
+    inserted successfully.
+2.  SELECT statements display the inserted records.
+3.  The student’s email address is changed to updated@example.com.
+4.  DELETE statements remove the sample records successfully.
+5.  The final SELECT statements show that the sample records have been
+    removed. The tables themselves remain in the database.
+6.  SHOW TABLES lists the four tables, and DESC displays their
+    structures.
+
+PRECAUTIONS
+
+1.  Run Experiment 5(a) first to create the database tables.
+2.  Select the college database before executing the queries.
+3.  Execute the INSERT statements in the given order because of the
+    foreign key relationships.
+4.  Delete enrollment records before deleting the related student,
+    course or department records.
+5.  Use a WHERE clause with UPDATE and DELETE to avoid modifying or
+    deleting every record in a table.
+6.  Execute each SQL statement with a semicolon at the end.
+7.  Run all queries in the same MySQL session because the @ variables
+    are session-specific.
+
+RESULT
+
+Thus, Create, Read, Update and Delete (CRUD) operations were
+successfully performed and verified on the MySQL college database.
